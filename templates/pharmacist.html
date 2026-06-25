@@ -1,0 +1,243 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2 class="mb-4">Pharmacist - Prescriptions</h2>
+
+{% if message %}
+<div class="alert alert-info">
+    {{ message }}
+</div>
+{% endif %}
+
+<div class="card shadow mb-4">
+    <div class="card-header bg-warning">
+        Search Patient
+    </div>
+
+    <div class="card-body">
+        <form method="POST">
+            <input type="hidden" name="action" value="search_patient">
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Patient National ID</label>
+                    <input class="form-control" name="national_id" required>
+                </div>
+            </div>
+
+            <button class="btn btn-warning">Search Prescriptions</button>
+        </form>
+    </div>
+</div>
+
+{% if patient %}
+<div class="card shadow mb-4">
+    <div class="card-header bg-light">
+        Patient Details
+    </div>
+
+    <div class="card-body">
+        <p><b>Name:</b> {{ patient.full_name }}</p>
+        <p><b>National ID:</b> {{ patient.national_id }}</p>
+        <p><b>Age:</b> {{ patient.age() }}</p>
+        <p><b>Gender:</b> {{ patient.gender }}</p>
+    </div>
+</div>
+{% endif %}
+
+{% if visits %}
+<h3>Patient Prescriptions</h3>
+
+<table class="table table-bordered table-striped shadow-sm bg-white">
+    <thead class="table-warning">
+        <tr>
+            <th>ID</th>
+            <th>Doctor</th>
+            <th>Diagnosis</th>
+            <th>Medication</th>
+            <th>Dosage</th>
+            <th>Status</th>
+            <th>PDF</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for v in visits %}
+        <tr>
+            <td>{{ v.id }}</td>
+            <td>{{ v.doctor_name }}</td>
+            <td>{{ v.diagnosis }}</td>
+            <td>{{ v.medication }}</td>
+            <td>{{ v.dosage }}</td>
+
+            <td>
+                {% if v.status == "open" %}
+                    <span class="badge bg-success">Open</span>
+                {% else %}
+                    <span class="badge bg-secondary">Dispensed</span>
+                {% endif %}
+            </td>
+
+            <td>
+                {% if v.pdf_url %}
+                    <a href="{{ v.pdf_url }}" target="_blank" class="btn btn-sm btn-outline-primary">
+                        Open PDF
+                    </a>
+                {% else %}
+                    No PDF
+                {% endif %}
+            </td>
+
+            <td>
+                {% if v.status == "open" %}
+                <form method="POST">
+                    <input type="hidden" name="action" value="dispense">
+                    <input type="hidden" name="visit_id" value="{{ v.id }}">
+                    <button class="btn btn-sm btn-success">Dispense</button>
+                </form>
+                {% else %}
+                    -
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endif %}
+<hr class="my-5">
+
+<h3>Handwritten Prescription OCR</h3>
+
+<div class="card shadow mb-4">
+    <div class="card-header bg-secondary text-white">
+        Upload Handwritten Prescription Image
+    </div>
+
+    <div class="card-body">
+        <form method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="action" value="ocr">
+
+            <div class="mb-3">
+                <label class="form-label">Prescription Image</label>
+                <input class="form-control" type="file" name="prescription_image" accept="image/*" required>
+            </div>
+
+            <button class="btn btn-secondary">Run OCR</button>
+        </form>
+    </div>
+</div>
+
+{% if uploaded_file_path %}
+<div class="alert alert-success">
+    Uploaded file saved at: {{ uploaded_file_path }}
+</div>
+{% endif %}
+
+{% if ocr_text %}
+<div class="card shadow mb-4">
+    <div class="card-header bg-dark text-white">
+        OCR Result
+    </div>
+
+    <div class="card-body">
+        <pre>{{ ocr_text }}</pre>
+    </div>
+</div>
+{% endif %}
+<hr class="my-5">
+
+<h3>Clinical Trials Search</h3>
+
+<div class="card shadow mb-4">
+    <div class="card-header bg-info text-white">
+        Search Drug in ClinicalTrials.gov
+    </div>
+
+    <div class="card-body">
+        <form method="POST">
+            <input type="hidden" name="action" value="clinical_trials">
+
+            <div class="mb-3">
+                <label class="form-label">Drug Name</label>
+                <input class="form-control" name="drug_name" placeholder="Example: Acamol, Paracetamol, Ibuprofen" required>
+            </div>
+
+            <button class="btn btn-info text-white">Search Clinical Trials</button>
+        </form>
+    </div>
+</div>
+
+{% if clinical_trials %}
+<div class="card shadow mb-4">
+    <div class="card-header bg-dark text-white">
+        ClinicalTrials.gov Results
+    </div>
+
+    <div class="card-body">
+        {% for trial in clinical_trials %}
+        <div class="border-bottom pb-3 mb-3">
+            <h5>{{ trial.title }}</h5>
+            <p><b>NCT ID:</b> {{ trial.nct_id }}</p>
+            <p><b>Status:</b> {{ trial.status }}</p>
+            <p><b>Conditions:</b> {{ trial.conditions }}</p>
+
+            {% if trial.url != "#" %}
+            <a href="{{ trial.url }}" target="_blank" class="btn btn-sm btn-outline-dark">
+                Open Study
+            </a>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+<hr class="my-5">
+
+<h3>Drug Side Effects Search</h3>
+
+<div class="card shadow mb-4">
+    <div class="card-header bg-danger text-white">
+        Search Drug Side Effects using openFDA
+    </div>
+
+    <div class="card-body">
+        <form method="POST">
+            <input type="hidden" name="action" value="side_effects">
+
+            <div class="mb-3">
+                <label class="form-label">Drug Name</label>
+                <input class="form-control" name="side_effect_drug" placeholder="Example: Paracetamol, Ibuprofen, Aspirin" required>
+            </div>
+
+            <button class="btn btn-danger">Search Side Effects</button>
+        </form>
+    </div>
+</div>
+
+{% if side_effects %}
+<div class="card shadow mb-4">
+    <div class="card-header bg-dark text-white">
+        Side Effects Results
+    </div>
+
+    <div class="card-body">
+        {% for item in side_effects %}
+        <div class="border-bottom pb-3 mb-3">
+            <h5>{{ item.drug }}</h5>
+            <p><b>Generic:</b> {{ item.generic }}</p>
+            <p><b>Source:</b> {{ item.source }}</p>
+            <p><b>Side Effects / Adverse Reactions:</b></p>
+            <p>{{ item.side_effects }}</p>
+
+            {% if item.warnings %}
+            <p><b>Warnings:</b></p>
+            <p>{{ item.warnings }}</p>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+{% endblock %}

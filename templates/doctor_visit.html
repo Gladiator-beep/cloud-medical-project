@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2 class="mb-4">Doctor - Create Visit and Prescription</h2>
+
+{% if message %}
+<div class="alert alert-info">
+    {{ message }}
+</div>
+{% endif %}
+
+<div class="card shadow mb-4">
+    <div class="card-header bg-success text-white">
+        New Medical Visit
+    </div>
+
+    <div class="card-body">
+        <form method="POST">
+
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label class="form-label">Patient National ID</label>
+                    <input class="form-control" name="national_id" required>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <label class="form-label">Doctor Name</label>
+                    <input class="form-control" name="doctor_name" required>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <label class="form-label">Medication</label>
+                    <input class="form-control" name="medication" required>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Diagnosis</label>
+                    <input class="form-control" name="diagnosis" required>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Dosage</label>
+                    <input class="form-control" name="dosage" required>
+                </div>
+
+                <div class="col-md-12 mb-3">
+                    <label class="form-label">Instructions</label>
+                    <textarea class="form-control" name="instructions" rows="4"></textarea>
+                </div>
+            </div>
+
+            <button class="btn btn-success">Create Visit</button>
+        </form>
+    </div>
+</div>
+
+{% if pdf_path %}
+<div class="alert alert-success">
+
+    <strong>Prescription PDF created successfully!</strong>
+
+    <br><br>
+
+    <a href="{{ pdf_path }}"
+       class="btn btn-success"
+       target="_blank">
+
+        📄 Open Prescription PDF
+
+    </a>
+
+</div>
+{% endif %}
+
+{% if search_results %}
+<div class="card shadow mb-4">
+    <div class="card-header bg-info text-white">
+        Diagnosis Cloud Search Results
+    </div>
+
+    <div class="card-body">
+        {% for result in search_results %}
+        <div class="mb-3 border-bottom pb-2">
+            <h5>{{ result.title }}</h5>
+            <p>{{ result.summary }}</p>
+
+            {% if result.url != "#" %}
+            <a href="{{ result.url }}" target="_blank" class="btn btn-sm btn-outline-info">
+                Open Source
+            </a>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+
+{% if patient %}
+<div class="card shadow">
+    <div class="card-header bg-light">
+        Patient Details
+    </div>
+
+    <div class="card-body">
+        <p><b>Name:</b> {{ patient.full_name }}</p>
+        <p><b>National ID:</b> {{ patient.national_id }}</p>
+        <p><b>Age:</b> {{ patient.age() }}</p>
+        <p><b>Gender:</b> {{ patient.gender }}</p>
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2 class="mb-4">Admin - Manage Patients</h2>
+
+<div class="card shadow mb-4">
+    <div class="card-header bg-primary text-white">
+        Add New Patient
+    </div>
+
+    <div class="card-body">
+        <form method="POST">
+            <div class="row">
+
+                <div class="col-md-4 mb-3">
+                    <label class="form-label">National ID</label>
+                    <input class="form-control" name="national_id" required>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <label class="form-label">Full Name</label>
+                    <input class="form-control" name="full_name" required>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <label class="form-label">Gender</label>
+                    <select class="form-select" name="gender">
+                        <option>Male</option>
+                        <option>Female</option>
+                        <option>Other</option>
+                    </select>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <label class="form-label">Birth Date</label>
+                    <input class="form-control" type="date" name="birth_date" required>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <label class="form-label">Email</label>
+                    <input class="form-control" name="email">
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <label class="form-label">Phone</label>
+                    <input class="form-control" name="phone">
+                </div>
+
+                <div class="col-md-12 mb-3">
+                    <label class="form-label">Image URL</label>
+                    <input class="form-control" name="image_url">
+                </div>
+
+                <div class="col-md-3 mb-3 form-check ms-3">
+                    <input class="form-check-input" type="checkbox" name="pregnant">
+                    <label class="form-check-label">Pregnant</label>
+                </div>
+
+                <div class="col-md-3 mb-3 form-check">
+                    <input class="form-check-input" type="checkbox" name="breastfeeding">
+                    <label class="form-check-label">Breastfeeding</label>
+                </div>
+
+            </div>
+
+            <button class="btn btn-primary">Save Patient</button>
+        </form>
+    </div>
+</div>
+
+<h3>Patients List</h3>
+
+<table class="table table-striped table-bordered shadow-sm bg-white">
+    <thead class="table-primary">
+        <tr>
+            <th>National ID</th>
+            <th>Name</th>
+            <th>Age</th>
+            <th>Gender</th>
+            <th>Pregnant</th>
+            <th>Breastfeeding</th>
+            <th>Email</th>
+            <th>Phone</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for p in patients %}
+        <tr>
+            <td>{{ p.national_id }}</td>
+            <td>{{ p.full_name }}</td>
+            <td>{{ p.age() }}</td>
+            <td>{{ p.gender }}</td>
+            <td>{{ "Yes" if p.pregnant else "No" }}</td>
+            <td>{{ "Yes" if p.breastfeeding else "No" }}</td>
+            <td>{{ p.email }}</td>
+            <td>{{ p.phone }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}
