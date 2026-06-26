@@ -44,7 +44,7 @@ def visit():
             medication=medication,
             dosage=dosage,
             instructions=instructions,
-            pdf_url=cloud_pdf,
+            pdf_url="/" + pdf_path.replace("\\", "/"),
             status="open"
         )
 
@@ -59,6 +59,6 @@ def visit():
         "doctor_visit.html",
         message=message,
         patient=patient,
-        pdf_path=pdf_path,
+        pdf_path = "/" + pdf_path.replace("\\", "/"),
         search_results=search_results
     )
