@@ -19,7 +19,13 @@ def visit():
 
         if not patient:
             message = "Patient not found"
-            return render_template("doctor_visit.html", message=message)
+            return render_template(
+                "doctor_visit.html",
+                message=message,
+                patient=None,
+                pdf_path=None,
+                search_results=None
+            )
 
         doctor_name = request.form["doctor_name"]
         diagnosis = request.form["diagnosis"]
@@ -27,7 +33,7 @@ def visit():
         dosage = request.form["dosage"]
         instructions = request.form["instructions"]
 
-        pdf_path = create_prescription_pdf(
+        local_pdf_path = create_prescription_pdf(
             patient,
             doctor_name,
             diagnosis,
@@ -35,7 +41,12 @@ def visit():
             dosage,
             instructions
         )
-        cloud_pdf = upload_pdf(pdf_path)
+
+        # Upload to Cloudinary for cloud storage requirement
+        cloud_pdf = upload_pdf(local_pdf_path)
+
+        # Local URL for opening the PDF in the app
+        local_pdf_url = "/" + local_pdf_path.replace("\\", "/")
 
         visit = Visit(
             patient_id=patient.id,
@@ -44,7 +55,7 @@ def visit():
             medication=medication,
             dosage=dosage,
             instructions=instructions,
-            pdf_url="/" + pdf_path.replace("\\", "/"),
+            pdf_url=local_pdf_url,
             status="open"
         )
 
@@ -53,12 +64,14 @@ def visit():
 
         message = "Visit, prescription and PDF were created successfully"
         search_results = search_diagnosis_info(diagnosis)
-        pdf_path = cloud_pdf
-            
+
+        # The button will open local PDF route, not Cloudinary raw URL
+        pdf_path = local_pdf_url
+
     return render_template(
         "doctor_visit.html",
         message=message,
         patient=patient,
-        pdf_path = "/" + pdf_path.replace("\\", "/"),
+        pdf_path=pdf_path,
         search_results=search_results
     )
