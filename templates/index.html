@@ -2,80 +2,79 @@
 
 {% block content %}
 
-<div class="text-center mb-5">
-    <h1 class="display-5 fw-bold">Cloud Medical Prescription System</h1>
-    <p class="lead">
-        A cloud-based system for managing patients, medical prescriptions and pharmacist dispensing.
-    </p>
+<div class="hero-dashboard mb-5">
+    <div>
+        <p class="hero-badge">Cloud Healthcare Platform</p>
+        <h1>Cloud Medical Prescription System</h1>
+        <p>
+            A modern cloud-based system for managing patients,
+            prescriptions, clinical data and pharmacist dispensing.
+        </p>
+    </div>
 </div>
+
 <div class="row g-4 mb-5">
 
     <div class="col-md-3">
-        <div class="card shadow text-center">
-            <div class="card-body">
-                <h5>Total Patients</h5>
-                <h2>{{ total_patients }}</h2>
-            </div>
+        <div class="glass-card stat-card">
+            <span class="stat-icon">👥</span>
+            <p>Total Patients</p>
+            <h2>{{ total_patients }}</h2>
         </div>
     </div>
 
     <div class="col-md-3">
-        <div class="card shadow text-center">
-            <div class="card-body">
-                <h5>Total Visits</h5>
-                <h2>{{ total_visits }}</h2>
-            </div>
+        <div class="glass-card stat-card">
+            <span class="stat-icon">🩺</span>
+            <p>Total Visits</p>
+            <h2>{{ total_visits }}</h2>
         </div>
     </div>
 
     <div class="col-md-3">
-        <div class="card shadow text-center">
-            <div class="card-body">
-                <h5>Open Prescriptions</h5>
-                <h2>{{ open_prescriptions }}</h2>
-            </div>
+        <div class="glass-card stat-card">
+            <span class="stat-icon">📄</span>
+            <p>Open Prescriptions</p>
+            <h2>{{ open_prescriptions }}</h2>
         </div>
     </div>
 
     <div class="col-md-3">
-        <div class="card shadow text-center">
-            <div class="card-body">
-                <h5>Dispensed</h5>
-                <h2>{{ dispensed_prescriptions }}</h2>
-            </div>
+        <div class="glass-card stat-card">
+            <span class="stat-icon">✅</span>
+            <p>Dispensed</p>
+            <h2>{{ dispensed_prescriptions }}</h2>
         </div>
     </div>
 
 </div>
+
 <div class="row g-4">
 
     <div class="col-md-4">
-        <div class="card shadow h-100">
-            <div class="card-body text-center">
-                <h3>Admin</h3>
-                <p>Manage patient records.</p>
-                <a href="/admin/patients" class="btn btn-primary">Go to Admin</a>
-            </div>
+        <div class="glass-card action-card">
+            <div class="action-icon">👨‍💼</div>
+            <h3>Admin</h3>
+            <p>Manage patient records and demographic details.</p>
+            <a href="/admin/patients" class="btn btn-primary">Go to Admin</a>
         </div>
     </div>
 
     <div class="col-md-4">
-        <div class="card shadow h-100">
-            <div class="card-body text-center">
-                <h3>Doctor</h3>
-                <p>Create visits, diagnoses and prescriptions.</p>
-                <a href="/doctor/visit" class="btn btn-success">Go to Doctor</a>
-            </div>
+        <div class="glass-card action-card">
+            <div class="action-icon">👨‍⚕️</div>
+            <h3>Doctor</h3>
+            <p>Create visits, diagnoses and cloud prescriptions.</p>
+            <a href="/doctor/visit" class="btn btn-success">Go to Doctor</a>
         </div>
     </div>
 
     <div class="col-md-4">
-        <div class="card shadow h-100">
-            <div class="card-body text-center">
-                <h3>Pharmacist</h3>
-                <p>View prescriptions and dispense medication.</p>
-                <a href="/pharmacist/" class="btn btn-warning">Go to Pharmacist</a>
-            </div>
+        <div class="glass-card action-card">
+            <div class="action-icon">💊</div>
+            <h3>Pharmacist</h3>
+            <p>Dispense prescriptions and check medical APIs.</p>
+            <a href="/pharmacist/" class="btn btn-warning">Go to Pharmacist</a>
         </div>
     </div>
 

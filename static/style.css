@@ -1,11 +1,89 @@
 body {
-    background-color: #f5f7fb;
+    background:
+        radial-gradient(circle at top left, rgba(0, 123, 255, 0.25), transparent 35%),
+        radial-gradient(circle at top right, rgba(111, 66, 193, 0.25), transparent 35%),
+        #eef3fb;
 }
 
-.card {
-    border-radius: 16px;
+.hero-dashboard {
+    background: linear-gradient(135deg, #071b4d, #075edb, #6f42c1);
+    color: white;
+    border-radius: 28px;
+    padding: 55px;
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.20);
 }
 
-.card h3 {
-    font-weight: bold;
+.hero-dashboard h1 {
+    font-size: 44px;
+    font-weight: 800;
+}
+
+.hero-dashboard p {
+    font-size: 18px;
+    opacity: 0.92;
+}
+
+.hero-badge {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.18);
+    padding: 8px 16px;
+    border-radius: 30px;
+    font-size: 14px !important;
+    margin-bottom: 18px;
+}
+
+.glass-card {
+    background: rgba(255, 255, 255, 0.78);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    border-radius: 22px;
+    box-shadow: 0 15px 35px rgba(35, 74, 135, 0.16);
+    transition: all 0.25s ease;
+}
+
+.glass-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 22px 45px rgba(35, 74, 135, 0.25);
+}
+
+.stat-card {
+    padding: 26px;
+    text-align: center;
+}
+
+.stat-icon {
+    font-size: 34px;
+}
+
+.stat-card p {
+    margin: 12px 0 5px;
+    color: #526174;
+    font-weight: 600;
+}
+
+.stat-card h2 {
+    font-size: 34px;
+    font-weight: 800;
+    color: #071b4d;
+}
+
+.action-card {
+    padding: 34px;
+    text-align: center;
+    height: 100%;
+}
+
+.action-icon {
+    font-size: 42px;
+    margin-bottom: 12px;
+}
+
+.action-card h3 {
+    font-weight: 800;
+    color: #071b4d;
+}
+
+.action-card p {
+    color: #526174;
+    min-height: 50px;
 }
